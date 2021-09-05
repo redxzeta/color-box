@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./app.css";
 import styled from "styled-components";
 interface IColorBox {
@@ -55,32 +55,36 @@ function App() {
     const b = Math.floor(Math.random() * 256);
     return `rgb(${r}, ${g}, ${b})`;
   };
-  const onClick = (x: IColorBox) => {
-    let arr = [];
-    if (x.left > -1) {
-      arr.push(x.left);
-    }
-    if (x.right > -1) {
-      arr.push(x.right);
-    }
-    if (x.bottom > -1) {
-      arr.push(x.bottom);
-    }
-    if (x.top > -1) {
-      arr.push(x.top);
-    }
-    let second = arr[Math.floor(Math.random() * arr.length)];
-    const colorBoxArray = colorBox.map((c: IColorBox) => {
-      if (c.id === x.id) {
-        return { ...c, color: getRandomColor() };
-      } else if (c.id === second) {
-        return { ...c, color: getRandomColor() };
-      } else {
-        return c;
+
+  const onClick = useCallback(
+    (x: IColorBox) => {
+      let arr = [];
+      if (x.left > -1) {
+        arr.push(x.left);
       }
-    });
-    setColorBox(colorBoxArray);
-  };
+      if (x.right > -1) {
+        arr.push(x.right);
+      }
+      if (x.bottom > -1) {
+        arr.push(x.bottom);
+      }
+      if (x.top > -1) {
+        arr.push(x.top);
+      }
+      let second = arr[Math.floor(Math.random() * arr.length)];
+      const colorBoxArray = colorBox.map((c: IColorBox) => {
+        if (c.id === x.id) {
+          return { ...c, color: getRandomColor() };
+        } else if (c.id === second) {
+          return { ...c, color: getRandomColor() };
+        } else {
+          return c;
+        }
+      });
+      setColorBox(colorBoxArray);
+    },
+    [colorBox]
+  );
   return (
     <main>
       {colorBox.map((x: IColorBox) => {
