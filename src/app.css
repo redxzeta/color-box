@@ -12,10 +12,3 @@ main {
   display: flex;
   flex-wrap: wrap;
 }
-.color-box {
-  width: 60px;
-  height: 60px;
-  background-color: green;
-  border-style: solid;
-  border-width: 1px;
-}
