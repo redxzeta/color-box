@@ -8,7 +8,11 @@ A page of color boxes
 
 ### What it does
 
-Creates a page filled with random color boxes boxes based on the browser window size. Clicking on a square changes its color and a random color of the box.
+Creates a page filled with random color boxes boxes based on the browser window size. Clicking on a square changes its color and a random neighbors of the box.
+
+### Random Colors
+
+I used styled components to take in the random generated color 
 
 ## Available Scripts
 
