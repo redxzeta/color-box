@@ -2,6 +2,14 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Color Box
+
+A page of color boxes
+
+### What it does
+
+Creates a page filled with random color boxes boxes based on the browser window size. Clicking on a square changes its color and a random color of the box.
+
 ## Available Scripts
 
 In the project directory, you can run:
