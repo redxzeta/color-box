@@ -89,11 +89,9 @@ function App() {
     <main>
       {colorBox.map((x: IColorBox) => {
         return(
-          <>
           <ColorBox onClick={() => onClick(x)} bg={x.color} key={x.id}>
             {x.id}
           </ColorBox>
-          </>
         );
       })}
     </main>
