@@ -88,7 +88,13 @@ function App() {
   return (
     <main>
       {colorBox.map((x: IColorBox) => {
-        return <ColorBox onClick={() => onClick(x)} bg={x.color} key={x.id} />;
+        return(
+          <>
+          <ColorBox onClick={() => onClick(x)} bg={x.color} key={x.id}>
+            {x.id}
+          </ColorBox>
+          </>
+        );
       })}
     </main>
   );
@@ -98,5 +104,8 @@ const ColorBox = styled.div<IStyleBox>`
   width: 60px;
   height: 60px;
   background-color: ${(props) => props.bg};
+  text-align: center;
+  vertical-align: middle;
+  line-height: 60px;
 `;
 export default App;
