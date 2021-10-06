@@ -4,7 +4,7 @@ interface IAppContext {
 	boxesPerRow: number;
 	boxIdsNeedChangeColor: number[];
 	numberOfBoxes: number;
-	requestBoxIdToChangeColour: (id: number) => void;
+	requestBoxIdsToChangeColour: (ids: number[]) => void;
 	completeChangingColor: (id: number) => void;
 }
 
@@ -12,6 +12,6 @@ export const AppContext = React.createContext<IAppContext>({
 	boxesPerRow: 0,
 	boxIdsNeedChangeColor: [],
 	numberOfBoxes: 0,
-	requestBoxIdToChangeColour: (id: number) => {},
+	requestBoxIdsToChangeColour: (ids: number[]) => {},
 	completeChangingColor: (id: number) => {},
 });

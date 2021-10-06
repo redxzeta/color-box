@@ -33,7 +33,7 @@ export const ColorBox = (props: IProps) => {
 		boxesPerRow,
 		boxIdsNeedChangeColor,
 		numberOfBoxes,
-		requestBoxIdToChangeColour,
+		requestBoxIdsToChangeColour,
 		completeChangingColor,
 	} = React.useContext(AppContext);
 
@@ -66,25 +66,29 @@ export const ColorBox = (props: IProps) => {
 			const column = elem.offsetLeft / BOX_SIZE;
 
 			const totalRows = Math.floor(numberOfBoxes / boxesPerRow);
+
+			const getBoxId = (row: number, column: number): number => boxesPerRow * row + column;
+
 			const adjacentBoxIds = [];
 			if (row > 0) {
-				adjacentBoxIds.push(boxesPerRow * (row - 1) + column);
+				adjacentBoxIds.push(getBoxId(row - 1, column));
 			}
 			if (row < totalRows) {
-				adjacentBoxIds.push(boxesPerRow * (row + 1) + column);
+				adjacentBoxIds.push(getBoxId(row + 1, column));
 			}
 			if (column > 0) {
-				adjacentBoxIds.push(boxesPerRow * row + (column - 1));
+				adjacentBoxIds.push(getBoxId(row, column - 1));
 			}
 			if (column < boxesPerRow - 1) {
-				adjacentBoxIds.push(boxesPerRow * row + (column + 1));
+				adjacentBoxIds.push(getBoxId(row, column + 1));
 			}
 
 			const randomId = adjacentBoxIds[Math.round(Math.random() * (adjacentBoxIds.length - 1))];
-			requestBoxIdToChangeColour(randomId);
+			const boxId = getBoxId(row, column);
+			requestBoxIdsToChangeColour([randomId, boxId]);
 		}
 
-	}, [divRef, boxesPerRow, numberOfBoxes, requestBoxIdToChangeColour]);
+	}, [divRef, boxesPerRow, numberOfBoxes, requestBoxIdsToChangeColour]);
 
 	return (
 		<Box
