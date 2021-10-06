@@ -18,8 +18,8 @@ function App() {
 
 	const numberOfBoxes = column * rows;
 
-	const requestBoxIdToChangeColour = React.useCallback((id: number) => {
-		setBoxIdsNeedChangeColor((currentValue) => [...currentValue, id]);
+	const requestBoxIdsToChangeColour = React.useCallback((ids: number[]) => {
+		setBoxIdsNeedChangeColor((currentValue) => [...currentValue, ...ids]);
 	}, []);
 
 	const removeBoxIdFromBoxIdNeedChangeColor = React.useCallback((id: number) => {
@@ -30,14 +30,14 @@ function App() {
 		boxesPerRow,
 		boxIdsNeedChangeColor,
 		numberOfBoxes,
-		requestBoxIdToChangeColour,
+		requestBoxIdsToChangeColour,
 		completeChangingColor: removeBoxIdFromBoxIdNeedChangeColor,
 	}), [
 		boxesPerRow,
 		boxIdsNeedChangeColor,
 		numberOfBoxes,
 		removeBoxIdFromBoxIdNeedChangeColor,
-		requestBoxIdToChangeColour,
+		requestBoxIdsToChangeColour,
 	]);
 
 	return (
