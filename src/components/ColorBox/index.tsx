@@ -22,6 +22,13 @@ const Box = styled.div<IStyleBox>`
   user-select: none;
 `;
 
+const getBoxId = (row: number, column: number, boxesPerRow: number): number => boxesPerRow * row + column;
+
+const getBoxPos = (elem: HTMLDivElement) => ({
+	row: elem.offsetTop / BOX_SIZE,
+	column: elem.offsetLeft / BOX_SIZE,
+});
+
 export const ColorBox = (props: IProps) => {
 	const {
 		boxId,
@@ -58,37 +65,67 @@ export const ColorBox = (props: IProps) => {
 		completeChangingColor,
 	]);
 
+	React.useEffect(() => {
+		const elem = divRef.current;
+		const handleContextMenuClick = (e: Event) => {
+			e.preventDefault();
+
+			if (elem) {
+				const {row, column} = getBoxPos(elem);
+				const totalRows = Math.floor(numberOfBoxes / boxesPerRow);
+
+				const boxIdsToChange = [
+					...Array(totalRows)
+						.fill(0)
+						.map((_, index) => getBoxId(index, column, boxesPerRow)),
+					...Array(boxesPerRow)
+						.fill(0)
+						.map((_, index) => getBoxId(row, index, boxesPerRow)),
+				];
+
+				requestBoxIdsToChangeColour(boxIdsToChange);
+			}
+
+		};
+
+		if (elem) {
+			elem.addEventListener('contextmenu', handleContextMenuClick);
+		}
+
+		return (() => {
+			if (elem) {
+				elem.removeEventListener('contextmenu', handleContextMenuClick);
+			}
+		})
+	}, [divRef, numberOfBoxes, boxesPerRow, requestBoxIdsToChangeColour]);
+
 	const handleBoxClick = React.useCallback(() => {
 		if (divRef.current) {
 			const elem = divRef.current;
 
-			const row = elem.offsetTop / BOX_SIZE;
-			const column = elem.offsetLeft / BOX_SIZE;
+			const {row, column} = getBoxPos(elem);
 
 			const totalRows = Math.floor(numberOfBoxes / boxesPerRow);
 
-			const getBoxId = (row: number, column: number): number => boxesPerRow * row + column;
-
 			const adjacentBoxIds = [];
 			if (row > 0) {
-				adjacentBoxIds.push(getBoxId(row - 1, column));
+				adjacentBoxIds.push(getBoxId(row - 1, column, boxesPerRow));
 			}
 			if (row < totalRows) {
-				adjacentBoxIds.push(getBoxId(row + 1, column));
+				adjacentBoxIds.push(getBoxId(row + 1, column, boxesPerRow));
 			}
 			if (column > 0) {
-				adjacentBoxIds.push(getBoxId(row, column - 1));
+				adjacentBoxIds.push(getBoxId(row, column - 1, boxesPerRow));
 			}
 			if (column < boxesPerRow - 1) {
-				adjacentBoxIds.push(getBoxId(row, column + 1));
+				adjacentBoxIds.push(getBoxId(row, column + 1, boxesPerRow));
 			}
 
 			const randomId = adjacentBoxIds[Math.round(Math.random() * (adjacentBoxIds.length - 1))];
-			const boxId = getBoxId(row, column);
 			requestBoxIdsToChangeColour([randomId, boxId]);
 		}
 
-	}, [divRef, boxesPerRow, numberOfBoxes, requestBoxIdsToChangeColour]);
+	}, [boxId, divRef, boxesPerRow, numberOfBoxes, requestBoxIdsToChangeColour]);
 
 	return (
 		<Box
